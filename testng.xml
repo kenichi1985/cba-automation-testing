@@ -1,21 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Covid19 game testing">
-  <test name="Test registeration">
+<suite name="Covid19 game testing" thread-count="3" paralle="tests">
+  <test name="Test registeration Chrome">
+  <parameter name="browser" value="Chrome" />
       <classes>
         <class name="testCases.Register"/>
       </classes>
-  </test> <!-- Test --> 
-   
-  <test name="Test Login">    
+  </test> 
+  
+  <test name="Test registeration Firefox">
+  <parameter name="browser" value="Firefox" />
+      <classes>
+        <class name="testCases.Register"/>
+      </classes>
+  </test> 
+
+  <test name="Test registeration Edge">
+  <parameter name="browser" value="Edge" />
+      <classes>
+        <class name="testCases.Register"/>
+      </classes>
+  </test> 
+
+   <test name="Test Login Chrome">
+   <parameter name="browser" value="Chrome" />    
     <classes>
        <class name="testCases.Login"/>
     </classes>
-     
-  </test> <!-- Test -->
-  <test name="Test Quiz">    
+    </test> 
+
+    <test name="Test Login Firefox">
+   <parameter name="browser" value="Firefox" />    
+    <classes>
+       <class name="testCases.Login"/>
+    </classes>
+    </test> 
+
+    <test name="Test Login Edge">
+   <parameter name="browser" value="Edge" />    
+    <classes>
+       <class name="testCases.Login"/>
+    </classes>
+  </test> 
+
+  <test name="Test Quiz Chrome">   
+  <parameter name="browser" value="Chrome" />  
     <classes>
        <class name="testCases.Quiz"/>
-    </classes>
-  </test> <!-- Test -->
-</suite> <!-- Suite -->
+    </classes> 
+  </test>  
+
+  <test name="Test Quiz Firefox">   
+  <parameter name="browser" value="Firefox" />  
+    <classes>
+       <class name="testCases.Quiz"/>
+    </classes> 
+  </test>
+
+  <test name="Test Quiz Edge">   
+  <parameter name="browser" value="Edge" />  
+    <classes>
+       <class name="testCases.Quiz"/>
+    </classes> 
+  </test>  
+</suite> 

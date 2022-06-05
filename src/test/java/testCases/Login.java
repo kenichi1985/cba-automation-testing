@@ -25,9 +25,10 @@ public class Login {
 
 
     @BeforeTest
-    public void setup(){
+    @Parameters("browser")
+    public void setup(String browser){
 
-        driver = BasePage.setupWebDriver();
+        driver = BasePage.setupWebDriver(browser);
         driver.get("https://responsivefight.herokuapp.com/");
        // driver.manage().window().maximize();
     }

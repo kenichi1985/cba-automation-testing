@@ -25,9 +25,10 @@ public class Register {
 
 
     @BeforeTest
-    public void setup(){
+    @Parameters("browser")
+    public void setup(String browser){
 
-        driver = BasePage.setupWebDriver();
+        driver = BasePage.setupWebDriver(browser);
         driver.get("https://responsivefight.herokuapp.com/");
        // driver.manage().window().maximize();
     }
@@ -51,7 +52,7 @@ public class Register {
         };
     }
 
-    @Test(dataProvider = "pos_user_data")
+    @Test(dataProvider = "pos_user_data", priority=1)
     public void register_user_pos_flow(String tcNum, String tcDescription, String usernameStr, String paswordStr) throws IOException{
 
         test.log(LogStatus.INFO,tcNum+" - "+tcDescription);
@@ -77,7 +78,7 @@ public class Register {
          };
      }
  
-     @Test(dataProvider = "neg_user_data")
+     @Test(dataProvider = "neg_user_data", priority=2)
      public void register_user_neg_flow(String tcNum, String tcDescription, String usernameStr, String paswordStr) throws IOException{
 
         String negScenario ="";
