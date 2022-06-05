@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Covid19 game testing">
+  <test name="Test registeration">
+      <classes>
+        <class name="testCases.Register"/>
+      </classes>
+  </test> <!-- Test --> 
+   
+  <test name="Test Login">    
+    <classes>
+       <class name="testCases.Login"/>
+    </classes>
+     
+  </test> <!-- Test -->
+  <test name="Test Quiz">    
+    <classes>
+       <class name="testCases.Quiz"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
