@@ -128,6 +128,8 @@ public class RegisterPage extends BasePage{
 
         click(registerBtn);
 
+        waitForPageLoad();
+
         enterText(userNameField, username);
 
         enterText(passwordField, password);

@@ -12,6 +12,7 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.HttpResponse;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -193,6 +194,31 @@ public class BasePage {
         return tcName;
 
     }
+
+    public void waitForPageLoad(){
+
+        JavascriptExecutor j = (JavascriptExecutor)driver;
+        if (j.executeScript("return document.readyState").toString().equals("complete")){
+         System.out.println("Page has loaded");
+        }
+        //iterate 50 times after every one second to verify if in ready state
+        for (int i=0; i<50; i++){
+            try {
+                Thread.sleep(1000);
+            }catch (InterruptedException ex) {
+                System.out.println("Page has not loaded yet ");
+            }
+            //again check page state
+            if (j.executeScript("return document.readyState").toString().equals("complete")){
+                break;
+            }
+        }
+
+
+    }
+
+
+    
 
 
 

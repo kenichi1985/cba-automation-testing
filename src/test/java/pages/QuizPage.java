@@ -98,8 +98,12 @@ public class QuizPage extends BasePage{
 
         for (int i=1; i<=ans.length; i++){
 
+            waitForPageLoad();
+
             //log info current quiz number and answer to be select
             System.out.println("current quiz no: "+i);
+
+            test.log(LogStatus.INFO,test.addScreenCapture(BasePage.capture())+"Quiz number "+i);
 
             //validate images
             validateImageField(test, "Quiz image");
@@ -108,8 +112,7 @@ public class QuizPage extends BasePage{
             //validate question
             validateTextField(test, "Question", questions[i-1]);
 
-            test.log(LogStatus.INFO,test.addScreenCapture(BasePage.capture())+"Quiz number "+i);
-
+            
             if(ans[i-1]==1){
                 answer=driver.findElement(ans1).getText();
                 click(ans1);
