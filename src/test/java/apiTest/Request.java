@@ -1,7 +1,14 @@
 package apiTest;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -207,6 +214,66 @@ public class Request {
         System.out.println("Status Code: "+statusCode);
 
         return statusCode;
+
+    }
+
+
+    public int[] getUser(String username, String password, String targetUser, int waitTime) throws InterruptedException{
+
+        int score = 0;
+        baseURI=BASE_URI;
+
+        requestHeaders = new HashMap<>();
+        requestHeaders.put("Authorization", API_KEY);
+        requestHeaders.put("Content-Type", "application/json");
+        requestHeaders.put("accept", "application/json");
+
+        JSONObject body = new JSONObject();
+
+        body.put("username", username);
+        body.put("password", password);
+        
+        //System.out.println("JSON: "+body.toJSONString());
+
+        Response response = given().headers(requestHeaders).body(body.toJSONString()).post("/auth/user/login").thenReturn();
+
+        JsonPath jsonPath =response.jsonPath();
+
+        String token = jsonPath.get("token");
+
+        System.out.println(token);
+
+        Map<String, String> requestHeaders2 = new HashMap<>();
+        requestHeaders2.put("Authorization", token);
+        requestHeaders2.put("accept", "application/json");
+
+        if(waitTime!=0)
+            TimeUnit.SECONDS.sleep(waitTime*60+1);
+
+
+        Response response2 = given().headers(requestHeaders2).get("/v1/user/"+targetUser).thenReturn();
+        
+        if(response2.statusCode()==200){
+            JsonPath jsonPath2 =response2.jsonPath();
+
+            List<Object> scoreList = jsonPath2.getList("score");
+
+            String scoreStr = scoreList.toString();
+
+            //only if str contains number, then remove the [] and convert to int
+            if(scoreStr.matches(".*\\d.*")){
+                score = Integer.parseInt(scoreStr.replaceAll("[^0-9]", ""));
+            }
+    
+            System.out.println(score);
+        }
+  
+
+        int[] results = {response.getStatusCode(), response2.getStatusCode(), score};
+
+
+        return results;
+
 
     }
 

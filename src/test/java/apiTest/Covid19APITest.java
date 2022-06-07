@@ -234,7 +234,7 @@ public class Covid19APITest {
      }
 
 
-     @Test(priority = 7)
+     @Test(priority = 8)
      public void updateUser(){
 
         String username = "adduser1";
@@ -260,19 +260,103 @@ public class Covid19APITest {
             test.log(LogStatus.FAIL,"Status code:"+ statusCode+", unknown error");
         }
 
+     }
+
+     @Test(priority = 9)
+     public void getUserScore() throws InterruptedException{
+
+        String username = "luke85";
+        String password = "abc12345";
+        String targetUser = "apachai";
+
+        test.log(LogStatus.INFO,"Get users' score");
+        
+        Request request = new Request();
+
+        int[] results = request.getUser(username, password, targetUser,0);
+
+
+        if(results[0] == 200){
+            test.log(LogStatus.PASS,"Login user's status code:"+ results[0]);
+        }
+        else if(results[0] == 400){
+            test.log(LogStatus.FAIL,"Login user's status code:"+ results[0]+", Unable to login");
+        }
+        else if(results[0] == 401){
+            test.log(LogStatus.FAIL,"Login user's status code:"+ results[0]+", Application authetication declined");
+        }
+        else{
+            test.log(LogStatus.FAIL,"Login user's status code:"+ results[0]+", unknown error");
+        }
+
+
+        if(results[1] == 200){
+            test.log(LogStatus.PASS,"Get user's score status code:"+ results[1]+" and score: "+ results[2]);
+        }
+        else if(results[1] == 400){
+            test.log(LogStatus.FAIL,"Login user's score status code:"+ results[1]+", Invalid request");
+        }
+        else if(results[1] == 403){
+            test.log(LogStatus.FAIL,"Login user's score status code:"+ results[1]+", Token Authentication failed - Incorrect token used");
+        }
+        else{
+            test.log(LogStatus.FAIL,"Login user's score status code:"+ results[1]+", unknown error");
+        }
+
+    }
+
+
+         
+        @DataProvider (name = "neg_user_score_data")
+        public Object[][] dpUserScoreMethod(){
+        return new Object[][] {
+            {"TC1","Validate if user not exist exist user ","ysgdtac", 200, 0},
+            {"TC2", "Validate after 3 mins if the token still valid","apachai", 403, 3}
+
+        };
+    }
+
+        @Test(priority = 10, dataProvider = "neg_user_score_data")
+        public void getUserScore_neg(String tc, String desc, String targetUser, int expectedStatusCode, int waitTime) throws InterruptedException{
+   
+           String username = "luke85";
+           //note: password not suppose in the code, this is a temporary solution
+           String password = "abc12345";
+   
+           test.log(LogStatus.INFO,tc+" - "+desc);
+           
+           Request request = new Request();
+   
+           int[] results = request.getUser(username, password, targetUser,waitTime);
+   
+   
+           if(results[0] == 200){
+               test.log(LogStatus.PASS,"Login user's status code:"+ results[0]);
+           }
+           else if(results[0] == 400){
+               test.log(LogStatus.FAIL,"Login user's status code:"+ results[0]+", Unable to login");
+           }
+           else if(results[0] == 401){
+               test.log(LogStatus.FAIL,"Login user's status code:"+ results[0]+", Application authetication declined");
+           }
+           else{
+               test.log(LogStatus.FAIL,"Login user's status code:"+ results[0]+", unknown error");
+           }
+   
+           if(results[1] == expectedStatusCode){
+               test.log(LogStatus.PASS,"Get user's score status code:"+ results[1]);
+           }
+           else{
+               test.log(LogStatus.FAIL,"Actual status code:"+ results[1]+", expected status code: "+expectedStatusCode);
+           }
+   
 
      }
 
-     //negative scenario for update user
-     //TC1 when username is empty
-     //TC2 when score is negative
-
-
+ 
 
      //delete user not working, unsure what is the delete-key 
 
-
-     //get user by name not working, when provide the name, "error": "Token Authentication failed :: Incorrect token used"
 
 
      @AfterClass
